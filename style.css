@@ -1,0 +1,318 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "poppins", sans-serif;
+  box-sizing: border-box;
+}
+body {
+  background: radial-gradient(ellipse at bottom, #0e1723 0%, #171717 100%);
+  color: #fff;
+}
+/*<----------------------------------Navigation bar---------------------------------->*/
+#logo {
+  font-family: "Source Code Pro", monospace;
+  font-size: 20px;
+  margin: 30px 30px;
+}
+nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+}
+nav ul {
+  margin: 25px 30px;
+}
+nav ul li {
+  display: inline-block;
+  list-style: none;
+  margin: 10px 20px;
+}
+nav ul li a {
+  color: #858383;
+  text-decoration: none;
+  font-size: 16px;
+  font-family: "poppins", sans-serif;
+  font-weight: 400;
+  position: relative;
+}
+nav ul li a:after {
+  content: "";
+  position: absolute;
+  background-color: #da0037;
+  height: 2.5px;
+  width: 0%;
+  left: 0;
+  bottom: -5px;
+  transition: 0.3s;
+}
+nav ul li a:hover::after {
+  color: #ffffff;
+  width: 100%;
+}
+nav ul li a:hover {
+  color: #ffffff;
+}
+/*<----------------------------------Hero Section---------------------------------->*/
+#hero {
+  height: 100vh;
+}
+.first {
+  display: flex;
+  justify-content: space-around;
+  margin: 0px 0;
+  align-items: center;
+  height: 100vh;
+}
+.first > div {
+  width: 30%;
+}
+.left {
+  font-size: 3rem;
+}
+span {
+  color: #da0037;
+}
+.hey {
+  font-size: 21px;
+  font-family: "Roboto", sans-serif;
+}
+.i {
+  font-size: 39px;
+  font-family: "Roboto", sans-serif;
+}
+.i span {
+  font-style: italic;
+}
+.web {
+  font-size: 89px;
+}
+/*<----------------------------------About---------------------------------->*/
+#about {
+  height: auto;
+}
+.profile {
+  text-align: center;
+}
+.profile img {
+  height: 300px;
+  width: auto;
+  border-radius: 50%;
+  display: inline;
+}
+.about {
+  margin: 25px 200px;
+}
+.about p {
+  font-size: 20px;
+}
+.university {
+  background-color: #171717;
+  padding: 3px 3px;
+  text-align: center;
+  position: relative;
+}
+.university p {
+  margin: 0px;
+  font-size: 21px;
+}
+.university #year {
+  color: #858383;
+}
+.university p a {
+  text-decoration: underline;
+  color: #ffffff;
+  transition: 0.2s;
+}
+.university p a:hover {
+  color: #da0037;
+}
+.university img {
+  height: auto;
+  width: 95vw;
+  opacity: 0.4;
+  margin: 0px 0px;
+  display: inline;
+}
+.college {
+  inset: 0;
+  margin: auto;
+  position: absolute;
+  top: 0px;
+}
+/*<----------------------------------Portfolio---------------------------------->*/
+#portfolio {
+  margin: 0px 100px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+#portfolio > h1 {
+  margin-bottom: 30px;
+}
+#portfolio .row {
+  display: grid;
+  grid-gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+.work-list {
+  position: relative;
+}
+.work-list img {
+  border-radius: 10px;
+  width: 100%;
+  transition: transform 0.5s;
+}
+.layer {
+  width: 100%;
+  height: 0;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), #da0037);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  overflow: hidden;
+  transition: height 0.5s;
+}
+.layer a {
+  text-decoration: none;
+  color: #da0037;
+  font-size: 18px;
+  margin-top: 20px;
+  width: 60px;
+  height: 60px;
+  background: #ffffff;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 60px;
+}
+.work-list img:hover {
+  transform: scale(1.04);
+}
+.work-list:hover .layer {
+  height: 100%;
+}
+
+/*<----------------------------------Contact----------------------------->*/
+#contact {
+  height: 100vh;
+
+  display: flex;
+  align-items: center;
+}
+#want {
+  font-size: 122px;
+}
+.chat {
+  font-size: 41px;
+  color: #858383;
+}
+#mail p {
+  font-size: 29px;
+  color: #858383;
+}
+#mail a {
+  text-decoration: none;
+  color: white;
+  font-size: 48px;
+  font-family: "Source Code Pro", monospace;
+  transition: 0.2s;
+}
+#mail a:hover {
+  color: #da0037;
+}
+#social {
+  margin: 0px 0px;
+}
+#social p {
+  font-size: 29px;
+  color: #858383;
+}
+#social img {
+  margin: 15px 15px 0px 0px;
+  transition: 0.2s;
+}
+
+#social img:hover {
+  transform: translateY(-5px);
+}
+/* <--------------------------------------------------------------CSS for small screen ----------------------------------------------------> */
+nav .fa-solid {
+  display: none;
+}
+@media only screen and (max-width: 635px) {
+  /* <---------------------------Navbar-----------------> */
+  nav .fa-solid {
+    display: block;
+    font-size: 25px;
+    right: 25px;
+    top: 25px;
+    position: absolute;
+    cursor: pointer;
+  }
+nav ul{
+  background: #da0037;
+  position: fixed;
+  top: 0;
+  right: -200px;
+  width: 200px;
+  height: 100vh;
+  margin: 0 0;
+  padding: 50px;
+  z-index: 2;
+
+}
+
+nav ul li{
+  display: block;
+  margin: 25px;
+  
+}
+nav ul li a{
+  color: #ffffff;
+}
+nav ul  .fa-solid{
+  position: absolute;
+    top: 25px;
+    left: 25px;
+    cursor: pointer;
+}
+  /* <---------------------------Hero-----------------> */
+  .first {
+    flex-direction: column;
+    height: auto;
+    padding-top: 75px;
+  }
+  .first > div {
+    width: 90%;
+  }
+
+  /*<----------------------------------About---------------------------------->*/
+  .about {
+    margin: 25px 50px;
+  }
+  .university p {
+    margin: 0px;
+    font-size: 15px;
+  }
+  /*<----------------------------------Contact----------------------------->*/
+  #contact {
+    height: auto;
+  }
+  #want {
+    font-size: 60px;
+  }
+  #mail a {
+    font-size: 30px;
+  }
+}
+
+/* <--------------------------------------------------------------CSS for Tablet screen ----------------------------------------------------> */
