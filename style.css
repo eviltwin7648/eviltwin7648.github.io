@@ -143,8 +143,8 @@ span {
 }
 /*<----------------------------------Portfolio---------------------------------->*/
 #portfolio {
-  margin: 0px 100px;
-  height: 100vh;
+  margin: 30px 100px;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -209,7 +209,7 @@ span {
 
 /*<----------------------------------Contact----------------------------->*/
 #contact {
-  height: 100vh;
+  height: auto;
 margin-bottom: 10px;
   display: flex;
   align-items: center;
