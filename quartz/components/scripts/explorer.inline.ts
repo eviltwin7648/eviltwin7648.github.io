@@ -211,7 +211,19 @@ async function setupExplorer(currentSlug: FullSlug) {
 
     // Create and insert new content
     const fragment = document.createDocumentFragment()
-    for (const child of trie.children) {
+
+    // Hoist children of a single root folder (e.g. "notes") to avoid
+    // redundant nesting in the explorer sidebar
+    let explorerRoot = trie.children
+    if (
+      explorerRoot.length === 1 &&
+      explorerRoot[0].isFolder &&
+      explorerRoot[0].slugSegment === "notes"
+    ) {
+      explorerRoot = explorerRoot[0].children
+    }
+
+    for (const child of explorerRoot) {
       const node = child.isFolder
         ? createFolderNode(currentSlug, child, opts)
         : createFileNode(currentSlug, child)

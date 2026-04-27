@@ -386,26 +386,16 @@ async function copyVaultFile(sourceRelativePath, destinationPath) {
 }
 
 async function writeLandingPage(publishedNotes) {
-  const notes = [...publishedNotes].sort((left, right) => left.title.localeCompare(right.title))
-  const list = notes.length
-    ? notes
-        .map((note) => {
-          const link = normalizePath(path.join("notes", note.relativePath)).replace(/\.md$/i, "")
-          return `- [[${link}|${note.title}]]`
-        })
-        .join("\n")
-    : "- No public notes yet. Mark a vault note with `publish: true` and run the exporter again."
-
   const page = `---
 title: Public Notes
-description: Selected writing published from my private Obsidian vault.
+description: A curated public surface for selected notes, systems thinking, and technical writing.
+cssclasses:
+  - home-page
 ---
 
-# Public Notes
+This public archive is generated from a private Obsidian vault. Only notes explicitly marked with \`publish: true\` are exported, then shaped into a quieter reading experience with Quartz.
 
-This site is generated from selected Obsidian notes. Only notes explicitly marked with \`publish: true\` are exported.
-
-${list}
+Expect a narrow slice of ongoing work: system design notes, implementation thinking, and drafts that are worth making legible in public.
 `
 
   await fs.writeFile(path.join(contentRoot, "index.md"), page, "utf8")

@@ -240,6 +240,12 @@ export function renderPage(
   } = components
   const Header = HeaderConstructor()
   const Body = BodyConstructor()
+  const bodyClasses = [
+    left.length === 0 ? "no-left-sidebar" : "",
+    right.length === 0 ? "no-right-sidebar" : "",
+  ]
+    .filter(Boolean)
+    .join(" ")
 
   const LeftComponent = (
     <div class="left sidebar">
@@ -264,7 +270,7 @@ export function renderPage(
       <Head {...componentData} />
       <body data-slug={slug}>
         <div id="quartz-root" class="page">
-          <Body {...componentData}>
+          <Body {...componentData} class={bodyClasses}>
             {LeftComponent}
             <div class="center">
               <div class="page-header">

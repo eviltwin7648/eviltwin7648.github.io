@@ -1,3 +1,866 @@
 @use "./base.scss";
 
-// put your custom CSS here!
+// ─────────────────────────────────────────────────
+// Design Tokens
+// ─────────────────────────────────────────────────
+
+:root {
+  --page-width: 100%;
+  --content-width: 54rem;
+  --reading-width: 100%;
+
+  // Warm, soft light palette
+  --light: #faf8f5;
+  --lightgray: #eee9e2;
+  --gray: #a09890;
+  --darkgray: #4a4540;
+  --dark: #1c1a17;
+
+  --surface: #f5f2ed;
+  --surface-muted: #edeae4;
+  --elevated: #faf8f5;
+
+  --border-soft: #e8e4de;
+  --border-strong: #4a4540;
+
+  --text-main: #2c2c2c;
+  --text-soft: #8a8a8a;
+
+  --link: #4a4a4a;
+  --link-hover: #1c1a17;
+
+  --code-bg: #f3f0eb;
+  --code-border: #e8e4de;
+
+  --body-line-height: 1.8;
+}
+
+body {
+  background: var(--light);
+  color: var(--text-main);
+}
+
+// ─────────────────────────────────────────────────
+// Page Layout
+// ─────────────────────────────────────────────────
+
+.page {
+  max-width: var(--page-width);
+  padding: 0 4rem;
+}
+
+.page #quartz-body {
+  grid-template:
+    "grid-sidebar-left grid-header grid-sidebar-right"
+    "grid-sidebar-left grid-center grid-sidebar-right"
+    "grid-sidebar-left grid-footer grid-sidebar-right" / 240px minmax(0, 1fr) 240px;
+  gap: 4rem;
+  justify-content: space-between;
+}
+
+.page #quartz-body.no-right-sidebar {
+  grid-template:
+    "grid-sidebar-left grid-header"
+    "grid-sidebar-left grid-center"
+    "grid-sidebar-left grid-footer" / 240px minmax(0, 1fr);
+}
+
+.page #quartz-body.no-left-sidebar {
+  grid-template:
+    "grid-header grid-sidebar-right"
+    "grid-center grid-sidebar-right"
+    "grid-footer grid-sidebar-right" / minmax(0, 1fr) 220px;
+}
+
+.page #quartz-body.no-left-sidebar.no-right-sidebar {
+  grid-template:
+    "grid-header"
+    "grid-center"
+    "grid-footer" / minmax(0, 1fr);
+}
+
+// ─────────────────────────────────────────────────
+// Sidebar — clean, quiet
+// ─────────────────────────────────────────────────
+
+.page #quartz-body .sidebar {
+  height: calc(100vh - 4rem);
+  margin-top: 2rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  opacity: 1;
+}
+
+.page #quartz-body .sidebar.left {
+  justify-self: start;
+}
+
+.page #quartz-body .sidebar.right {
+  justify-self: end;
+}
+
+.page #quartz-body .sidebar.left,
+.page #quartz-body .sidebar.right {
+  top: 1rem;
+}
+
+// ─────────────────────────────────────────────────
+// Center content
+// ─────────────────────────────────────────────────
+
+.page #quartz-body .page-header,
+.page #quartz-body .center,
+.page #quartz-body footer {
+  width: 100%;
+  max-width: none;
+  justify-self: start;
+}
+
+.page #quartz-body .page-header {
+  margin: 3.5rem 0 0;
+}
+
+.page #quartz-body .center {
+  padding: 0;
+}
+
+.page article,
+.page .popover-hint > article {
+  max-width: var(--content-width);
+}
+
+.page .center > article,
+.page .center > .popover-hint > article {
+  max-width: var(--content-width);
+}
+
+.page .center > .popover-hint,
+.page .center > .page-header > .popover-hint,
+.page .page-listing,
+.page .selected-writing,
+.page .selected-writing__list,
+.page .portfolio-home {
+  max-width: none;
+}
+
+.page article > * + *,
+.home-page > * + * {
+  margin-top: 1.4rem;
+}
+
+.page .center > hr {
+  margin: 3rem 0;
+  max-width: none;
+}
+
+// ─────────────────────────────────────────────────
+// Typography — body
+// ─────────────────────────────────────────────────
+
+.page article p,
+.page article li,
+.page article td,
+.page article blockquote,
+.page article .katex,
+.page article .math {
+  color: var(--text-main);
+  font-size: 1.1rem;
+  line-height: var(--body-line-height);
+  letter-spacing: -0.003em;
+}
+
+.page article ul,
+.page article ol {
+  padding-left: 1.35rem;
+}
+
+.page article li + li {
+  margin-top: 0.4rem;
+}
+
+// ─────────────────────────────────────────────────
+// Typography — headings
+// ─────────────────────────────────────────────────
+
+.page article > h1,
+.article-title {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  color: var(--dark);
+  font-size: 2.4rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.page article > h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.85rem;
+  color: var(--dark);
+  font-size: clamp(1.5rem, 2.5vw, 1.9rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.page article > h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.6rem;
+  color: var(--dark);
+  font-size: clamp(1.2rem, 2vw, 1.45rem);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.page article > h4,
+.page article > h5,
+.page article > h6 {
+  margin-top: 1.6rem;
+  margin-bottom: 0.5rem;
+  color: var(--dark);
+  font-weight: 600;
+}
+
+// ─────────────────────────────────────────────────
+// Homepage — hero
+// ─────────────────────────────────────────────────
+
+.home-page {
+  margin-top: 0;
+}
+
+.portfolio-home {
+  display: grid;
+  gap: 3rem;
+  margin-bottom: 2rem;
+}
+
+.portfolio-hero {
+  display: block;
+  max-width: 40rem;
+}
+
+.portfolio-hero__copy {
+  padding: 0;
+}
+
+.portfolio-hero__title {
+  margin: 0;
+  color: var(--dark);
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+.portfolio-hero__tagline {
+  margin: 1.2rem 0 0;
+  max-width: 36rem;
+  color: var(--text-main);
+  font-size: 1.1rem;
+  line-height: 1.75;
+}
+
+// Social links — understated
+.portfolio-hero__socials {
+  display: flex;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.portfolio-hero__social-link {
+  color: var(--text-soft) !important;
+  font-size: 0.88rem;
+  font-weight: 400 !important;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: color 160ms ease;
+  box-shadow: none !important;
+
+  &:hover {
+    color: var(--link-hover) !important;
+  }
+}
+
+// ─────────────────────────────────────────────────
+// Homepage — selected writing (list, not cards)
+// ─────────────────────────────────────────────────
+
+.selected-writing {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.selected-writing__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.selected-writing__header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.selected-writing__archive-link {
+  color: var(--text-soft) !important;
+  font-size: 0.88rem;
+  font-weight: 400 !important;
+  text-decoration: none;
+  box-shadow: none !important;
+
+  &:hover {
+    color: var(--link-hover) !important;
+  }
+}
+
+.selected-writing__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.selected-writing__item {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: 0.5rem 1.5rem;
+  align-items: baseline;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.selected-writing__item:last-child {
+  border-bottom: none;
+}
+
+.selected-writing__item-meta {
+  color: var(--text-soft);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  padding-top: 0.15rem;
+}
+
+.selected-writing__item-content h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--dark);
+}
+
+.selected-writing__item-content h3 a {
+  color: var(--dark);
+  text-decoration: none;
+  box-shadow: none;
+  transition: color 160ms ease;
+
+  &:hover {
+    color: var(--link);
+  }
+}
+
+.selected-writing__description {
+  margin: 0.3rem 0 0;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.selected-writing__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+// ─────────────────────────────────────────────────
+// Components — borders removed, whitespace only
+// ─────────────────────────────────────────────────
+
+// Remove heavy borders from most components
+.page-listing,
+.toc,
+.backlinks,
+.recent-notes,
+.graph > .graph-outer,
+.explorer,
+.portfolio-footer,
+.callout {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+// Search keeps a subtle border since it's interactive
+.search > .search-button {
+  border: 1px solid var(--border-soft);
+  border-radius: 0.35rem;
+  background: transparent;
+  box-shadow: none;
+}
+
+.search > .search-container > .search-space > input,
+.search > .search-container > .search-space > .search-layout {
+  border: 1px solid var(--border-soft);
+  border-radius: 0.35rem;
+  background: var(--light);
+  box-shadow: none;
+}
+
+.page-listing {
+  margin-top: 3rem;
+  padding: 0;
+  width: 100%;
+}
+
+.section-ul {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0;
+}
+
+.section-li {
+  list-style: none;
+}
+
+.section {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr);
+  gap: 0.5rem 1.5rem;
+  align-items: baseline;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+.section > .meta {
+  margin: 0;
+  white-space: nowrap;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+}
+
+.section > .tags {
+  grid-column: 2;
+  margin-top: 0.2rem;
+}
+
+// ─────────────────────────────────────────────────
+// Page title — quiet
+// ─────────────────────────────────────────────────
+
+.page-title {
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0.7;
+}
+
+.page-title a {
+  color: var(--dark);
+  text-decoration: none;
+}
+
+// ─────────────────────────────────────────────────
+// Content meta & breadcrumbs — minimal
+// ─────────────────────────────────────────────────
+
+.content-meta {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.breadcrumb-container {
+  margin-top: 0.6rem;
+  gap: 0.3rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.selected-writing__meta,
+.content-meta,
+.breadcrumb-container,
+.section > .meta {
+  color: var(--text-soft);
+}
+
+// ─────────────────────────────────────────────────
+// Search & sidebar components — quieter
+// ─────────────────────────────────────────────────
+
+.search > .search-button {
+  min-height: 2.6rem;
+  padding: 0 0.8rem 0 0.45rem;
+}
+
+.search > .search-button p,
+button.mobile-explorer,
+button.desktop-explorer,
+.explorer-content ul li > a,
+.folder-container div > a,
+.folder-container div > button span,
+.folder-container div > button,
+.toc ol > li > a,
+.backlinks li,
+.backlinks li > a,
+.recent-notes .section .desc h3 a {
+  color: var(--text-soft);
+}
+
+.explorer {
+  padding: 0.5rem 0;
+}
+
+// Sidebar section headings — very quiet
+.graph > h3,
+.toc h3,
+.backlinks h3,
+.recent-notes h3 {
+  margin-bottom: 0.85rem;
+  color: var(--gray);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+// ─────────────────────────────────────────────────
+// Graph — present but demoted
+// ─────────────────────────────────────────────────
+
+.graph > .graph-outer {
+  border: 1px solid var(--border-soft);
+  border-radius: 0.35rem;
+  background: var(--surface);
+  opacity: 0.75;
+  transition: opacity 300ms ease;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.graph .global-graph-outer {
+  background: rgba(22, 20, 18, 0.78);
+}
+
+.toc,
+.backlinks,
+.recent-notes {
+  padding: 0.5rem 0;
+}
+
+// ─────────────────────────────────────────────────
+// Links — understated
+// ─────────────────────────────────────────────────
+
+a,
+a.internal,
+a.external {
+  color: var(--link);
+  text-decoration: none;
+  transition:
+    color 140ms ease,
+    background-color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+a:hover,
+a.internal:hover,
+a.external:hover {
+  color: var(--link-hover);
+}
+
+// Article links — subtle underline
+.page article a:not(.tag-link):not([role="anchor"]),
+.section > .desc h3 a,
+.portfolio-footer__links a,
+.portfolio-hero__social-link {
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--link) 18%, transparent);
+}
+
+.page article a:not(.tag-link):not([role="anchor"]):hover,
+.section > .desc h3 a:hover {
+  box-shadow: inset 0 -1px 0 var(--link);
+}
+
+a.internal {
+  background: transparent;
+  padding: 0;
+}
+
+// Tags — minimal pill
+a.internal.tag-link {
+  border: 1px solid var(--border-soft);
+  border-radius: 2rem;
+  background: transparent;
+  color: var(--text-soft);
+  padding: 0.08rem 0.55rem;
+  font-size: 0.8rem;
+  box-shadow: none;
+  transition: all 160ms ease;
+}
+
+a.internal.tag-link:hover {
+  border-color: var(--gray);
+  color: var(--link);
+  background: transparent;
+}
+
+// ─────────────────────────────────────────────────
+// Blockquote — simple
+// ─────────────────────────────────────────────────
+
+blockquote {
+  margin: 1.5rem 0;
+  padding: 0 0 0 1.25rem;
+  border: none;
+  border-left: 2px solid var(--border-soft);
+  border-radius: 0;
+  background: transparent;
+
+  & p {
+    font-style: italic;
+    color: var(--text-soft);
+  }
+}
+
+// ─────────────────────────────────────────────────
+// Code — clean
+// ─────────────────────────────────────────────────
+
+pre {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--code-border);
+  border-radius: 0.35rem;
+  background: var(--code-bg);
+  box-shadow: none;
+}
+
+pre > code {
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+}
+
+code {
+  border: 1px solid var(--code-border);
+  border-radius: 0.2rem;
+  background: var(--code-bg);
+  color: var(--text-main);
+  padding: 0.1rem 0.3rem;
+  font-size: 0.88em;
+}
+
+hr,
+tr,
+.footnotes {
+  border-color: var(--border-soft);
+}
+
+.table-container > table {
+  margin: 1rem 0;
+}
+
+th {
+  color: var(--dark);
+}
+
+// ─────────────────────────────────────────────────
+// Footer — flat, no card
+// ─────────────────────────────────────────────────
+
+.portfolio-footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem 0 0;
+  border-top: 1px solid var(--border-soft);
+}
+
+.portfolio-footer__title,
+.portfolio-footer__year {
+  margin: 0;
+  color: var(--dark);
+}
+
+.portfolio-footer__title {
+  font-size: 1rem;
+}
+
+.portfolio-footer__copy {
+  margin: 0.2rem 0 0;
+  color: var(--text-soft);
+  font-size: 0.88rem;
+}
+
+.portfolio-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.portfolio-footer__links a {
+  color: var(--text-soft) !important;
+  font-weight: 400 !important;
+  font-size: 0.88rem;
+  box-shadow: none !important;
+
+  &:hover {
+    color: var(--link-hover) !important;
+  }
+}
+
+.portfolio-footer__year {
+  color: var(--text-soft);
+  font-size: 0.85rem;
+}
+
+// ─────────────────────────────────────────────────
+// Responsive — tablet
+// ─────────────────────────────────────────────────
+
+@media (min-width: 801px) and (max-width: 1200px) {
+  .page #quartz-body {
+    grid-template:
+      "grid-sidebar-left grid-header"
+      "grid-sidebar-left grid-center"
+      "grid-sidebar-left grid-sidebar-right"
+      "grid-sidebar-left grid-footer" / 220px minmax(0, 1fr);
+  }
+
+  .page #quartz-body.no-right-sidebar {
+    grid-template:
+      "grid-sidebar-left grid-header"
+      "grid-sidebar-left grid-center"
+      "grid-sidebar-left grid-footer" / 220px minmax(0, 1fr);
+  }
+
+  .page #quartz-body .sidebar {
+    height: auto;
+    position: sticky;
+  }
+
+  .page #quartz-body .page-header,
+  .page #quartz-body .center,
+  .page #quartz-body footer {
+    max-width: 100%;
+  }
+}
+
+// ─────────────────────────────────────────────────
+// Responsive — mobile
+// ─────────────────────────────────────────────────
+
+@media (max-width: 800px) {
+  .page {
+    padding: 0 1.25rem 2rem;
+  }
+
+  .page #quartz-body {
+    grid-template:
+      "grid-sidebar-left"
+      "grid-header"
+      "grid-center"
+      "grid-sidebar-right"
+      "grid-footer" / minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .page #quartz-body .sidebar,
+  .page #quartz-body .sidebar.left,
+  .page #quartz-body .sidebar.right {
+    position: static;
+    height: auto;
+    margin-top: 0;
+    padding: 0.5rem 0;
+    border-radius: 0;
+  }
+
+  .page #quartz-body .page-header {
+    margin-top: 1rem;
+  }
+
+  .page #quartz-body .page-header,
+  .page #quartz-body .center,
+  .page #quartz-body footer {
+    max-width: 100%;
+  }
+
+  .portfolio-hero {
+    max-width: 100%;
+  }
+
+  .selected-writing__header,
+  .portfolio-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .selected-writing__item {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+
+  .section {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .section > .tags {
+    grid-column: auto;
+  }
+}
+
+// ─────────────────────────────────────────────────
+// Dark mode — warm, low contrast
+// ─────────────────────────────────────────────────
+
+:root[saved-theme="dark"] {
+  --light: #141210;
+  --surface: #1c1a17;
+  --elevated: #222019;
+
+  --lightgray: #2a2723;
+  --gray: #706b62;
+  --darkgray: #d5cec4;
+  --dark: #ede8e0;
+
+  --border-soft: #2a2723;
+  --border-strong: #ede8e0;
+
+  --text-main: #e8e4de;
+  --text-soft: #908a80;
+
+  --link: #c8c0b4;
+  --link-hover: #ede8e0;
+
+  --code-bg: #1a1816;
+  --code-border: #2a2723;
+
+  .graph .global-graph-outer {
+    background: #0a0908;
+  }
+
+  .graph > .graph-outer {
+    background: var(--surface);
+  }
+}
