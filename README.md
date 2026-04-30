@@ -2,7 +2,7 @@
 
 This directory contains a Quartz-based public site for selected notes from your Obsidian vault.
 
-The vault source is configured explicitly in [public-notes-site.config.mjs](/home/eviltwin7648/Documents/Obsidian%20Vault/public-notes-site/public-notes-site.config.mjs), so this site can live outside the vault and still read only from that path.
+The local vault source is configured in [public-notes-site.config.mjs](/home/eviltwin7648/Desktop/public-notes-site/public-notes-site.config.mjs). In CI, that path is overridden with `PUBLIC_NOTES_VAULT_ROOT` so GitHub Actions can export from your private backup repo checkout instead of your laptop.
 
 ## Workflow
 
@@ -29,6 +29,46 @@ npm run dev-public
 npm run build-public
 ```
 
+## Automated publishing
+
+This repo is set up to publish automatically from a private GitHub backup of the Obsidian vault.
+
+1. Your backup repo pushes new vault changes to GitHub.
+2. That backup repo sends a `repository_dispatch` event with type `vault-backup-updated` to this repo.
+3. This repo checks out the backup repo in GitHub Actions.
+4. The exporter regenerates `content/notes` from notes marked `publish: true`.
+5. If exported content changed, this repo commits the new public content.
+6. GitHub Pages rebuilds and deploys the site from this repo.
+
+There is also a daily scheduled sync in this repo as a fallback if the dispatch event is missed.
+
+### Required repository configuration
+
+Set these in this site repo:
+
+- Repository variable `BACKUP_REPO_SLUG`: `owner/repo` for the private Obsidian backup repo
+- Optional repository variable `BACKUP_REPO_REF`: branch to sync from, defaults to `main`
+- Repository secret `BACKUP_REPO_TOKEN`: token with read access to the private backup repo
+
+### Companion backup repo workflow
+
+Your backup repo should send a dispatch event to this repo after a successful backup run. Add a step like this to the backup workflow:
+
+```yaml
+- name: Notify public site repo
+  env:
+    GH_TOKEN: ${{ secrets.SITE_REPO_DISPATCH_TOKEN }}
+  run: |
+    curl -L \
+      -X POST \
+      -H "Accept: application/vnd.github+json" \
+      -H "Authorization: Bearer $GH_TOKEN" \
+      https://api.github.com/repos/eviltwin7648/obisdian-quartz/dispatches \
+      -d '{"event_type":"vault-backup-updated"}'
+```
+
+In the backup repo, store `SITE_REPO_DISPATCH_TOKEN` as a secret with permission to dispatch workflows in this site repo.
+
 ## What gets published
 
 - Only Markdown notes with `publish: true`
@@ -46,6 +86,7 @@ npm run build-public
 
 - Update `pageTitle` and `baseUrl` in `quartz.config.ts`
 - Add your own favicon later if you want one
+- Configure the backup repo dispatch and site repo secrets/variables if you want fully automatic publishing
 - Push only this site to a public repo, or deploy from this subdirectory with your host of choice
 
 Quartz docs: https://quartz.jzhao.xyz/

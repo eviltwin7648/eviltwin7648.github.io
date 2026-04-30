@@ -1,0 +1,91 @@
+name: Sync Public Notes
+
+on:
+  repository_dispatch:
+    types:
+      - vault-backup-updated
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-public-notes
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      BACKUP_REPO_SLUG: ${{ vars.BACKUP_REPO_SLUG }}
+      BACKUP_REPO_REF: ${{ vars.BACKUP_REPO_REF || 'main' }}
+    steps:
+      - name: Validate configuration
+        run: |
+          if [ -z "$BACKUP_REPO_SLUG" ]; then
+            echo "Missing repository variable BACKUP_REPO_SLUG"
+            exit 1
+          fi
+
+          if [ -z "${{ secrets.BACKUP_REPO_TOKEN }}" ]; then
+            echo "Missing repository secret BACKUP_REPO_TOKEN"
+            exit 1
+          fi
+
+      - name: Checkout site repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout backup vault repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.BACKUP_REPO_SLUG }}
+          ref: ${{ env.BACKUP_REPO_REF }}
+          token: ${{ secrets.BACKUP_REPO_TOKEN }}
+          path: .tmp/vault
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Export public notes
+        env:
+          PUBLIC_NOTES_VAULT_ROOT: ${{ github.workspace }}/.tmp/vault
+        run: npm run sync-public
+
+      - name: Detect content changes
+        id: changes
+        run: |
+          if [ -n "$(git status --porcelain -- content)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit synced content
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content
+          git commit -m "Sync public notes from vault backup"
+          git push
+
+      - name: Report no-op sync
+        if: steps.changes.outputs.changed != 'true'
+        run: echo "No published note changes detected."

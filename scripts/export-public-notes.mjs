@@ -4,16 +4,11 @@ import matter from "gray-matter"
 import siteConfig from "../public-notes-site.config.mjs"
 
 const siteRoot = process.cwd()
-const vaultRoot = path.resolve(siteConfig.vaultRoot)
+const vaultRoot = path.resolve(process.env.PUBLIC_NOTES_VAULT_ROOT ?? siteConfig.vaultRoot)
 const contentRoot = path.join(siteRoot, "content")
 const notesRoot = path.join(contentRoot, "notes")
 
-const excludedRootDirs = new Set([
-  ".git",
-  ".obsidian",
-  "node_modules",
-  "public-notes-site",
-])
+const excludedRootDirs = new Set([".git", ".obsidian", "node_modules", "public-notes-site"])
 
 const assetExtensions = new Set([
   ".avif",
@@ -36,6 +31,7 @@ const assetExtensions = new Set([
 
 async function main() {
   await assertVaultRoot(vaultRoot)
+  console.log(`Using vault root: ${vaultRoot}`)
 
   const markdownFiles = await collectMarkdownFiles(vaultRoot)
   const publishedNotes = []
@@ -102,7 +98,9 @@ async function main() {
 
   await writeLandingPage(publishedNotes)
 
-  console.log(`Exported ${publishedNotes.length} public notes to ${path.relative(siteRoot, notesRoot)}`)
+  console.log(
+    `Exported ${publishedNotes.length} public notes to ${path.relative(siteRoot, notesRoot)}`,
+  )
 
   if (warnings.length > 0) {
     console.warn("\nWarnings:")
@@ -198,13 +196,19 @@ function buildStemIndex(relativePaths) {
 }
 
 function rewriteLinks(content, context) {
-  const rewrittenWikiLinks = content.replace(/(!?)\[\[([^\]]+)\]\]/g, (full, embedPrefix, inner) => {
-    return rewriteWikiLink(full, embedPrefix === "!", inner, context)
-  })
+  const rewrittenWikiLinks = content.replace(
+    /(!?)\[\[([^\]]+)\]\]/g,
+    (full, embedPrefix, inner) => {
+      return rewriteWikiLink(full, embedPrefix === "!", inner, context)
+    },
+  )
 
-  return rewrittenWikiLinks.replace(/(!?)\[([^\]]*)\]\(([^)]+)\)/g, (full, embedPrefix, label, target) => {
-    return rewriteMarkdownLink(full, embedPrefix === "!", label, target, context)
-  })
+  return rewrittenWikiLinks.replace(
+    /(!?)\[([^\]]*)\]\(([^)]+)\)/g,
+    (full, embedPrefix, label, target) => {
+      return rewriteMarkdownLink(full, embedPrefix === "!", label, target, context)
+    },
+  )
 }
 
 function rewriteWikiLink(full, isEmbed, inner, context) {
@@ -246,7 +250,9 @@ function rewriteWikiLink(full, isEmbed, inner, context) {
     return `> Private embed omitted: ${fallbackText}`
   }
 
-  context.warnings.push(`${context.sourceRelativePath}: converted private note link ${target} to text`)
+  context.warnings.push(
+    `${context.sourceRelativePath}: converted private note link ${target} to text`,
+  )
   return fallbackText
 }
 
@@ -282,11 +288,15 @@ function rewriteMarkdownLink(full, isEmbed, label, rawTarget, context) {
 
   const fallbackText = label || readableWikiTarget(cleanTarget)
   if (isEmbed) {
-    context.warnings.push(`${context.sourceRelativePath}: removed embedded private markdown link ${cleanTarget}`)
+    context.warnings.push(
+      `${context.sourceRelativePath}: removed embedded private markdown link ${cleanTarget}`,
+    )
     return `> Private embed omitted: ${fallbackText}`
   }
 
-  context.warnings.push(`${context.sourceRelativePath}: converted private markdown link ${cleanTarget} to text`)
+  context.warnings.push(
+    `${context.sourceRelativePath}: converted private markdown link ${cleanTarget} to text`,
+  )
   return fallbackText
 }
 
@@ -336,7 +346,8 @@ function resolveAssetTarget(rawTarget, context) {
   }
 
   const byName = [...context.allAssetCandidates].filter(
-    (assetPath) => path.basename(assetPath).toLowerCase() === path.basename(normalized).toLowerCase(),
+    (assetPath) =>
+      path.basename(assetPath).toLowerCase() === path.basename(normalized).toLowerCase(),
   )
 
   if (byName.length === 1) {
