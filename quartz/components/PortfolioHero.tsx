@@ -41,16 +41,37 @@ export default (() => {
           <div class="portfolio-hero__copy">
             <h1 class="portfolio-hero__title">Vishal Rai</h1>
             <p class="portfolio-hero__tagline">
-              Backend engineer. I work on event-driven systems, async job pipelines, and distributed
-              execution workflows. This is a small public surface for working notes and technical
-              thinking. 
-              <br />LEARNING SOMETHING NEW EVERYDAY
+              Backend engineer working on event-driven systems, async job pipelines, and distributed
+              workflows. This is a small public space for working notes and technical thinking.
             </p>
             <nav class="portfolio-hero__socials">
-              <a href="https://github.com/eviltwin7648" class="portfolio-hero__social-link" target="_blank" rel="noopener noreferrer">GitHub</a>
-              <a href="https://twitter.com/eviltwin7648" class="portfolio-hero__social-link" target="_blank" rel="noopener noreferrer">Twitter</a>
-              <a href="https://linkedin.com/in/mrvishalrai" class="portfolio-hero__social-link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-              <a href="mailto:vishalrai10342@gmail.com" class="portfolio-hero__social-link">Email</a>
+              <a
+                href="https://github.com/eviltwin7648"
+                class="portfolio-hero__social-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                GitHub
+              </a>
+              <a
+                href="https://twitter.com/eviltwin7648"
+                class="portfolio-hero__social-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Twitter
+              </a>
+              <a
+                href="https://linkedin.com/in/mrvishalrai"
+                class="portfolio-hero__social-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LinkedIn
+              </a>
+              <a href="mailto:vishalrai10342@gmail.com" class="portfolio-hero__social-link">
+                Email
+              </a>
             </nav>
           </div>
         </section>
