@@ -87,6 +87,7 @@ In the backup repo, store `SITE_REPO_DISPATCH_TOKEN` as a secret with permission
 - Update `pageTitle` and `baseUrl` in `quartz.config.ts`
 - Add your own favicon later if you want one
 - Configure the backup repo dispatch and site repo secrets/variables if you want fully automatic publishing
+- In GitHub Pages settings, set the source to `GitHub Actions`. If this repo is still publishing from the branch root, GitHub will render `README.md` instead of the Quartz build.
 - Push only this site to a public repo, or deploy from this subdirectory with your host of choice
 
 Quartz docs: https://quartz.jzhao.xyz/

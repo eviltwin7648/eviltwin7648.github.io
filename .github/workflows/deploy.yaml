@@ -4,11 +4,6 @@ on:
   push:
     branches:
       - main
-  workflow_run:
-    workflows:
-      - Sync Public Notes
-    types:
-      - completed
   workflow_dispatch:
 
 permissions:
@@ -22,12 +17,14 @@ concurrency:
 
 jobs:
   build:
-    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
       - name: Setup Node
         uses: actions/setup-node@v4

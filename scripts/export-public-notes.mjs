@@ -55,6 +55,8 @@ async function main() {
     })
   }
 
+  await assertNonEmptyExport(publishedNotes)
+
   const publishedByPath = new Set(publishedNotes.map((note) => normalizePath(note.relativePath)))
   const publishedByStem = buildStemIndex(publishedNotes.map((note) => note.relativePath))
   const allAssetCandidates = await collectAssetCandidates(vaultRoot)
@@ -180,6 +182,51 @@ async function collectAssetCandidates(rootDir, baseDir = rootDir, found = new Se
   }
 
   return found
+}
+
+async function assertNonEmptyExport(publishedNotes) {
+  if (publishedNotes.length > 0 || process.env.ALLOW_EMPTY_PUBLIC_EXPORT === "true") {
+    return
+  }
+
+  const existingNotes = await collectExistingExportedNotes()
+  if (existingNotes.length === 0) {
+    return
+  }
+
+  throw new Error(
+    [
+      "Refusing to replace existing public notes with an empty export.",
+      `Found ${existingNotes.length} existing exported note(s), but 0 notes with publish: true in ${vaultRoot}.`,
+      "This usually means the CI vault checkout path is wrong or the backup repo content is not where the exporter expects it.",
+      "If an empty export is intentional, rerun with ALLOW_EMPTY_PUBLIC_EXPORT=true.",
+    ].join(" "),
+  )
+}
+
+async function collectExistingExportedNotes() {
+  const exported = []
+
+  async function walk(currentDir, prefix = "") {
+    const entries = await fs.readdir(currentDir, { withFileTypes: true }).catch(() => [])
+
+    for (const entry of entries) {
+      const absolutePath = path.join(currentDir, entry.name)
+      const relativePath = normalizePath(path.join(prefix, entry.name))
+
+      if (entry.isDirectory()) {
+        await walk(absolutePath, relativePath)
+        continue
+      }
+
+      if (entry.isFile() && path.extname(entry.name).toLowerCase() === ".md") {
+        exported.push(relativePath)
+      }
+    }
+  }
+
+  await walk(notesRoot)
+  return exported
 }
 
 function buildStemIndex(relativePaths) {
