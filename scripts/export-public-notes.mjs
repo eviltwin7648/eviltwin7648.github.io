@@ -6,7 +6,7 @@ import siteConfig from "../public-notes-site.config.mjs"
 const siteRoot = process.cwd()
 const vaultRoot = path.resolve(process.env.PUBLIC_NOTES_VAULT_ROOT ?? siteConfig.vaultRoot)
 const contentRoot = path.join(siteRoot, "content")
-const notesRoot = path.join(contentRoot, "notes")
+const notesRoot = contentRoot
 
 const excludedRootDirs = new Set([".git", ".obsidian", "node_modules", "public-notes-site"])
 
@@ -63,6 +63,7 @@ async function main() {
 
   await fs.rm(notesRoot, { recursive: true, force: true })
   await fs.mkdir(notesRoot, { recursive: true })
+  await fs.writeFile(path.join(notesRoot, ".gitkeep"), "", "utf8")
 
   const copiedAssets = new Set()
   const warnings = []
@@ -83,8 +84,9 @@ async function main() {
     const frontmatter = { ...note.parsed.data }
     delete frontmatter.publish
 
-    const output = matter.stringify(rewrittenContent, frontmatter)
     const destination = path.join(notesRoot, note.relativePath)
+
+    const output = matter.stringify(rewrittenContent, frontmatter)
     await fs.mkdir(path.dirname(destination), { recursive: true })
     await fs.writeFile(destination, output, "utf8")
 
@@ -444,6 +446,11 @@ async function copyVaultFile(sourceRelativePath, destinationPath) {
 }
 
 async function writeLandingPage(publishedNotes) {
+  const hasIndex = publishedNotes.some((note) => normalizePath(note.relativePath) === "index.md")
+  if (hasIndex) {
+    return
+  }
+
   const page = `---
 title: Public Notes
 description: A curated public surface for selected notes, systems thinking, and technical writing.

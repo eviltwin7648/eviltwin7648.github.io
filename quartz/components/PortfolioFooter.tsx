@@ -16,7 +16,6 @@ export default (() => {
         </div>
         <div class="portfolio-footer__links">
           <a href={resolveRelative(fileData.slug!, "index" as FullSlug)}>Home</a>
-          <a href={resolveRelative(fileData.slug!, "notes" as FullSlug)}>Notes</a>
           <a href={resolveRelative(fileData.slug!, "tags" as FullSlug)}>Tags</a>
         </div>
         <p class="portfolio-footer__year">{year}</p>

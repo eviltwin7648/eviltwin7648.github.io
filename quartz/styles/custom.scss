@@ -90,6 +90,8 @@ body {
   border: none;
   background: transparent;
   opacity: 1;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .page #quartz-body .sidebar.left {

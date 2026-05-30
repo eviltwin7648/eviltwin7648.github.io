@@ -12,26 +12,10 @@ export const sharedPageComponents: SharedLayout = {
 // components for pages that display a single page (e.g. a single note)
 export const defaultContentPageLayout: PageLayout = {
   beforeBody: [
-    Component.ConditionalRender({
-      component: Component.PortfolioHero(),
-      condition: (page) => page.fileData.slug === "index",
-    }),
-    Component.ConditionalRender({
-      component: Component.Breadcrumbs(),
-      condition: (page) => page.fileData.slug !== "index",
-    }),
-    Component.ConditionalRender({
-      component: Component.ArticleTitle(),
-      condition: (page) => page.fileData.slug !== "index",
-    }),
-    Component.ConditionalRender({
-      component: Component.ContentMeta(),
-      condition: (page) => page.fileData.slug !== "index",
-    }),
-    Component.ConditionalRender({
-      component: Component.TagList(),
-      condition: (page) => page.fileData.slug !== "index",
-    }),
+    Component.Breadcrumbs(),
+    Component.ArticleTitle(),
+    Component.ContentMeta(),
+    Component.TagList(),
   ],
   left: [
     Component.PageTitle(),
@@ -56,12 +40,7 @@ export const defaultContentPageLayout: PageLayout = {
         showTags: false,
       },
     }),
-    Component.DesktopOnly(
-      Component.ConditionalRender({
-        component: Component.TableOfContents(),
-        condition: (page) => page.fileData.slug !== "index",
-      }),
-    ),
+    Component.DesktopOnly(Component.TableOfContents()),
     Component.Backlinks(),
   ],
 }
