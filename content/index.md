@@ -47,6 +47,17 @@ Here are some selected writings and system design notes from my digital garden:
 
 ---
 
+## services & commercial offerings
+
+Under my sole proprietorship, **Vishal Rai**, I offer software development services and commercial product solutions:
+* **Custom Software Development & Systems Design:** Specializing in Go, TypeScript, distributed queues (BullMQ/RabbitMQ), and high-throughput backend services.
+* **AI Infrastructure Consulting:** Production implementation of semantic caching, pgvector vector searches, and custom LLM gateway setups.
+* **Commercial Software Licensing & Support:** Enterprise licenses, custom self-hosted deployments, and premium support SLAs for my software projects (including Devfleet and Nexus).
+
+*For service inquiries, custom quotes, or licensing options, please reach out directly to vishalrai10342@gmail.com.*
+
+---
+
 ## experience
 
 ### [**AntarAI**](https://antarai.org/) · Software Engineer (Full-time)
