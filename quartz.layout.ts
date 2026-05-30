@@ -30,7 +30,12 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({
+      filterFn: (node) => {
+        const exclude = ["tags", "privacy", "terms", "support", "cancellation-refund", "contact"]
+        return !exclude.includes(node.slugSegment)
+      },
+    }),
   ],
   right: [
     Component.Graph({
@@ -60,7 +65,12 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({
+      filterFn: (node) => {
+        const exclude = ["tags", "privacy", "terms", "support", "cancellation-refund", "contact"]
+        return !exclude.includes(node.slugSegment)
+      },
+    }),
   ],
   right: [],
 }

@@ -47,6 +47,20 @@ Here are some selected writings and system design notes from my digital garden:
 
 ---
 
+## experience
+
+### [**AntarAI**](https://antarai.org/) · Software Engineer (Full-time)
+*Apr 2025 – Present · Remote*
+
+---
+
+## education
+
+### **Vivekananda Global University**
+*Bachelor of Technology in Computer Science · May 2021 – May 2025 · Jaipur, Rajasthan*
+
+---
+
 
 ## stack
 
