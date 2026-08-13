@@ -46,7 +46,7 @@ Here are some selected writings and system design notes from my digital garden:
 - [[Nexus/AST-aware Chunking|AST-aware Chunking: Improving RAG Retrieval Accuracy]]
 - [[Engineering/Consistent Hashing|Understanding Consistent Hashing]]
 - [[Nexus/RRF - Reciprocal Rank Fusion|Reciprocal Rank Fusion (RRF) for Hybrid Search]]
-- [[Devfleet/Devfleet Shortcomings & bugs|Post-Mortem: Devfleet Shortcomings & Bugs]]
+- Post-Mortem: Devfleet Shortcomings & Bugs
 
 ---
 
